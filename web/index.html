@@ -1,19 +1,62 @@
 <html>
-    <head>
+  <head> </head>
+  <body>
+    <p id="greeting">Hello Anonymous</p>
+    <p id="data">Hidden data</p>
+    <button id="btn-login">Log in</button>
+    <button id="btn-logout" disabled>Log out</button>
+  </body>
+  <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+  <script>
+    const req = new XMLHttpRequest();
+    const btnLogin = document.getElementById("btn-login");
+    const btnLogout = document.getElementById("btn-logout");
 
-    </head>
-    <body>
-        <p id="greeting">Hello Anonymous</p>
-        <p id="data">Hidden data</p>
-        <button id="btn-login" disabled="true" onclick="login()">Log in</button>
-        <button id="btn-logout" disabled="true" onclick="logout()">Log out</button>
-    </body>
-    <script>
-        const req = new XMLHttpRequest();
-        req.open('GET', '/api/protectedData', false);
-        req.send(null);
-        if (req.status===200) {
-            document.getElementById("data").innerHTML = req.responseText;;
+    auth0
+      .createAuth0Client({
+        domain: "dev-1cyn3hxbuftj1omg.us.auth0.com",
+        clientId: "VeoRLsO59VZWb181iUpY96muxUSiZEPx",
+        authorizationParams: {
+          redirect_uri: window.location.origin,
+          audience: "http://localhost:3000/api",
+        },
+      })
+      .then(async (auth0Client) => {
+        btnLogin.addEventListener("click", (e) => {
+          e.preventDefault();
+          auth0Client.loginWithRedirect();
+        });
+
+        if (
+          location.search.includes("state=") &&
+          (location.search.includes("code=") ||
+            location.search.includes("error="))
+        ) {
+          await auth0Client.handleRedirectCallback();
+          window.history.replaceState({}, document.title, "/");
         }
-    </script>
+
+        btnLogout.addEventListener("click", (e) => {
+          e.preventDefault();
+          auth0Client.logout();
+        });
+
+        const token = await auth0Client.getTokenSilently();
+        const isAuthenticated = await auth0Client.isAuthenticated();
+        const userProfile = await auth0Client.getUser();
+
+        if (isAuthenticated) {
+            btnLogin.disabled=true;
+            btnLogout.disabled=false;
+          document.getElementById("greeting").innerHTML =
+            "Hello " + userProfile.nickname;
+          req.open("GET", "/api/protectedData", false);
+          req.setRequestHeader("Authorization", `Bearer ${token}`);
+          req.send(null);
+          if (req.status === 200) {
+            document.getElementById("data").innerHTML = req.responseText;
+          }
+        }
+      });
+  </script>
 </html>
