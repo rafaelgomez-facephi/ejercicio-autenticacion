@@ -9,30 +9,33 @@
   </body>
   <script>
     document.getElementById("btn-login").addEventListener("click", () => {
-      fetch("http://localhost:4180/api/protectedData",{
+      fetch("http://localhost:4180/oauth2/userinfo",{
       method: "GET",
       credentials: "include",
-      mode: "cors"
-    }).then((e) => e.json()).then( data => {
-      document.getElementById('data').innerHTML= data.message
-    });
-
-    /*fetch("http://localhost:4180/oauth2/userinfo",{
-      method: "GET",
-      credentials: "include",
-      mode: "cors"
-    }).then((e) => console.log(e));*/
+      //mode: "cors"
+    }).then((e) => console.log(e));
     });
 
     document.getElementById("btn-logout").addEventListener("click", () => {
-      fetch("http://localhost:4180/oauth2/sign_out?rd=http://www.google.es").then((e) => {
-        console.log("test2");
-        console.log(e);
-      });
+      fetch("http://localhost:4180/oauth2/sign_out",{
+      method: "GET",
+      credentials: "include",
+      //mode: "cors"
+    }).then(
+        (e) => (window.location.href = "/")
+      );
     });
 
     document.getElementById("btn-data").addEventListener("click", () => {
-      window.location.href="http://localhost:4180/api/protectedData"
+      fetch("http://localhost:4180/api/protectedData", {
+        method: "GET",
+        credentials: "include",
+        mode: "cors",
+      })
+        .then((e) => e.json())
+        .then((data) => {
+          document.getElementById("data").innerHTML = data.message;
+        });
     });
   </script>
 </html>
