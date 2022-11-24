@@ -1,19 +1,24 @@
 <html>
-    <head>
+  <head> </head>
+  <body>
+    <p id="greeting">Hello Anonymous2</p>
+    <p id="data">Hidden data</p>
+    <button id="btn-login">Log in</button>
+    <button id="btn-logout">Log out</button>
+  </body>
+  <script>
+    document.getElementById("btn-login").addEventListener("click", () => {
+      fetch("http://localhost:4180/oauth2/start").then((e) => {
+        console.log("test1");
+        console.log(e);
+      });
+    });
 
-    </head>
-    <body>
-        <p id="greeting">Hello Anonymous</p>
-        <p id="data">Hidden data</p>
-        <button id="btn-login" disabled="true" onclick="login()">Log in</button>
-        <button id="btn-logout" disabled="true" onclick="logout()">Log out</button>
-    </body>
-    <script>
-        const req = new XMLHttpRequest();
-        req.open('GET', '/api/protectedData', false);
-        req.send(null);
-        if (req.status===200) {
-            document.getElementById("data").innerHTML = req.responseText;;
-        }
-    </script>
+    document.getElementById("btn-logout").addEventListener("click", () => {
+      fetch("http://localhost:4180/oauth2/userinfo").then((e) => {
+        console.log("test2");
+        console.log(e);
+      });
+    });
+  </script>
 </html>
