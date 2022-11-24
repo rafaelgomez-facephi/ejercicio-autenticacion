@@ -1,0 +1,30 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <p id="greeting">Hello Anonymous</p>
+        <p id="data">Hidden data</p>
+        <button id="btn-login">Log in</button>
+        <button id="btn-logout">Log out</button>
+        <button id="btn-data">pull data</button>
+    </body>
+    <script>
+        document.getElementById('btn-login').addEventListener('click', () => {
+            fetch('/oauth2/userinfo').then( e => {
+           console.log(e);
+        }) 
+        })
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            fetch('/oauth2/sign_out').then( e => {
+           console.log(e);
+        }) 
+        })
+        document.getElementById('btn-data').addEventListener('click', () => {
+            fetch('/api/protectedData').then( e => {
+           document.getElementById("data").innerHTML = e;
+           console.log(e);
+        }) 
+        })
+    </script>
+</html>
