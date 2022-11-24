@@ -9,8 +9,6 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/protectedData', (req, res) => {
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("access-control-allow-origin", "*");
   res.json({message: 'this is important data'});
 })
 

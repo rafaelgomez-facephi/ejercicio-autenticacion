@@ -6,8 +6,7 @@ const port = 3003
 
 
 app.get('/api/protectedData', (req, res) => {
-  res.header("Access-Control-Allow-Credentials", true);
-  res.send('this is important data')
+  res.json({message: 'this is important data'})
 })
 
 app.listen(port, () => {

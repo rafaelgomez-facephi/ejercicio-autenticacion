@@ -16,13 +16,9 @@ services:
     container_name: appweb
     hostname: appweb
     build: ./web
-    ports:
-     - 3000:3000
 
   api:
     container_name: api
     hostname: api
     build: ./api
-    ports:
-     - 3003:3003
     
