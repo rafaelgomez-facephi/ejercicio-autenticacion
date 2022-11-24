@@ -11,17 +11,24 @@
     </body>
     <script>
         document.getElementById('btn-login').addEventListener('click', () => {
-            fetch('/oauth2/userinfo').then( e => {
+            fetch('/oauth2/userinfo',{
+            credentials: "include"
+        }).then( e => {
            console.log(e);
         }) 
         })
         document.getElementById('btn-logout').addEventListener('click', () => {
-            fetch('/oauth2/sign_out').then( e => {
+            fetch('/oauth2/sign_out',{
+            credentials: "include"
+        }).then( e => {
            console.log(e);
         }) 
         })
         document.getElementById('btn-data').addEventListener('click', () => {
-            fetch('/api/protectedData').then( e => {
+            fetch('http://localhost:3003/api/protectedData',{
+            credentials: "include",
+            mode: "cors"
+        }).then( e => {
            document.getElementById("data").innerHTML = e;
            console.log(e);
         }) 
