@@ -9,7 +9,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/protectedData', (req, res) => {
-  res.send('this is important data')
+  res.header("Access-Control-Allow-Credentials", true);
+  res.json({message: 'this is important data'});
 })
 
 app.listen(port, () => {
