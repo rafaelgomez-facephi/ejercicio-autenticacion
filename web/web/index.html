@@ -13,10 +13,7 @@
     let dataMessage = document.getElementById("data");
 
     btnData.addEventListener("click", () => {
-        fetch("/oauth2/userinfo",  {
-          //"Access-Control-Allow-Origin": window.location.origin,
-          "Access-Control-Allow-Credentials": true
-        })
+        fetch("/oauth2/userinfo")
             .then((e) => e.json())
             .then((data) => greetingMessage.innerHTML = data.email)
             .catch(e => greetingMessage.innerHTML = "Hello Anonymous");
