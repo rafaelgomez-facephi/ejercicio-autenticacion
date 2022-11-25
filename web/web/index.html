@@ -7,17 +7,22 @@
     <button id="btn-logout">Log out</button>
   </body>
   <script>
-    document.getElementById("btn-data").addEventListener("click", () => {
+    let btnData = document.getElementById("btn-data");
+    let btnLogout = document.getElementById("btn-logout");
+    let greetingMessage = document.getElementById("greeting");
+    let dataMessage = document.getElementById("data");
+
+    btnData.addEventListener("click", () => {
         fetch("/oauth2/userinfo")
             .then((e) => e.json())
-            .then((data) => document.getElementById("greeting").innerHTML = data.email)
-            .catch(e => document.getElementById("greeting").innerHTML = "Hello Anonymous");
+            .then((data) => greetingMessage.innerHTML = data.email)
+            .catch(e => greetingMessage.innerHTML = "Hello Anonymous");
 
         fetch("/api/protectedData")
             .then((e) => e.json())
-            .then((data) => document.getElementById("data").innerHTML = data.message ? data.message : "Hidden data")
+            .then((data) => dataMessage.innerHTML = data.message ? data.message : "Hidden data")
     });
-    document.getElementById("btn-logout").addEventListener("click", () => {
+    btnLogout.addEventListener("click", () => {
       fetch("/oauth2/sign_out").then((e) => (window.location.href = "/"));
     });
   </script>
