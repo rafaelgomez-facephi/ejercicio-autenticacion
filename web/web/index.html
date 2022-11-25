@@ -5,10 +5,12 @@
     <p id="data">Hidden data</p>
     <button id="btn-data">Get data</button>
     <button id="btn-logout">Log out</button>
+    <button id="btn-refresh">Refresh</button>
   </body>
   <script>
     let btnData = document.getElementById("btn-data");
     let btnLogout = document.getElementById("btn-logout");
+    let btnRefresh = document.getElementById("btn-refresh");
     let greetingMessage = document.getElementById("greeting");
     let dataMessage = document.getElementById("data");
 
@@ -22,8 +24,13 @@
             .then((e) => e.json())
             .then((data) => dataMessage.innerHTML = data.message ? data.message : "Hidden data")
     });
+
     btnLogout.addEventListener("click", () => {
-      fetch("/oauth2/sign_out").then((e) => (window.location.href = "/"));
+      fetch("/oauth2/sign_out");
+    });
+
+    btnRefresh.addEventListener("click", () => {
+      window.location.href = "/";
     });
   </script>
 </html>
