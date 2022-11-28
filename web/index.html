@@ -1,41 +1,32 @@
 <html>
   <head> </head>
   <body>
-    <p id="greeting">Hello Anonymous2</p>
+    <p id="greeting">Hello Anonymous</p>
     <p id="data">Hidden data</p>
-    <button id="btn-login">Log in</button>
+    <button id="btn-login">Login</button>
     <button id="btn-logout">Log out</button>
-    <button id="btn-data">Pull data</button>
   </body>
   <script>
-    document.getElementById("btn-login").addEventListener("click", () => {
-      fetch("http://localhost:4180/oauth2/userinfo",{
-      method: "GET",
-      credentials: "include",
-      //mode: "cors"
-    }).then((e) => console.log(e));
-    });
+    let btnLogin = document.getElementById("btn-login");
+    let btnLogout = document.getElementById("btn-logout");
+    let greetingMessage = document.getElementById("greeting");
+    let dataMessage = document.getElementById("data");
+    let email;
 
-    document.getElementById("btn-logout").addEventListener("click", () => {
-      fetch("http://localhost:4180/oauth2/sign_out",{
-      method: "GET",
-      credentials: "include",
-      //mode: "cors"
-    }).then(
-        (e) => (window.location.href = "/")
-      );
-    });
+    fetch("/oauth2/userinfo")
+            .then((e) => e.json())
+            .then((data) => greetingMessage.innerHTML = data.email)
+            .catch(e => greetingMessage.innerHTML = "Hello Anonymous");
 
-    document.getElementById("btn-data").addEventListener("click", () => {
-      fetch("http://localhost:4180/api/protectedData", {
-        method: "GET",
-        credentials: "include",
-        //mode: "cors",
-      })
-        .then((e) => e.json())
-        .then((data) => {
-          document.getElementById("data").innerHTML = data.message;
-        });
+    fetch("/api/protectedData")
+        .then((e) => e.json()).then((data) => dataMessage.innerHTML = data.message ? data.message : "Hidden data")
+
+
+    btnLogin.addEventListener("click", () => {
+      window.location.href = "/oauth2/sign_in";
+    });
+    btnLogout.addEventListener("click", () => {
+      window.location.href = "/oauth2/sign_out";
     });
   </script>
 </html>
