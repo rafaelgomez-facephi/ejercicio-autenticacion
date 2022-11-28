@@ -6,7 +6,7 @@ const port = 3003
 
 
 app.get('/api/protectedData', (req, res) => {
-  res.json({message: 'this is important data'})
+  res.send('this is important data')
 })
 
 app.listen(port, () => {

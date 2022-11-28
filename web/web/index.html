@@ -3,34 +3,26 @@
   <body>
     <p id="greeting">Hello Anonymous</p>
     <p id="data">Hidden data</p>
-    <button id="btn-data">Get data</button>
-    <button id="btn-logout">Log out</button>
-    <button id="btn-refresh">Refresh</button>
+    <button id="btn"></button>
   </body>
   <script>
-    let btnData = document.getElementById("btn-data");
-    let btnLogout = document.getElementById("btn-logout");
-    let btnRefresh = document.getElementById("btn-refresh");
+    let btn = document.getElementById("btn");
     let greetingMessage = document.getElementById("greeting");
     let dataMessage = document.getElementById("data");
+    let email;
+    const req = new XMLHttpRequest();
 
-    btnData.addEventListener("click", () => {
-        fetch("/oauth2/userinfo")
-            .then((e) => e.json())
-            .then((data) => greetingMessage.innerHTML = data.email)
-            .catch(e => greetingMessage.innerHTML = "Hello Anonymous");
+    req.open('GET', '/api/protectedData', false);
 
-        fetch("/api/protectedData")
-            .then((e) => e.json())
-            .then((data) => dataMessage.innerHTML = data.message ? data.message : "Hidden data")
-    });
+    req.send();
 
-    btnLogout.addEventListener("click", () => {
-      fetch("/oauth2/sign_out");
-    });
+    email = req.getResponseHeader("Gap-Auth");
 
-    btnRefresh.addEventListener("click", () => {
-      window.location.href = "/";
-    });
+    greetingMessage.innerHTML = email ? email : "Hello Anonymous";
+    dataMessage.innerHTML = email ? req.responseText : "Hidden data";
+
+    btn.innerText = email ? "Logout" : "Login";
+
+    btn.addEventListener('click', () => window.location.href = email ? "/oauth2/sign_out" : "/oauth2/sign_in")
   </script>
 </html>
