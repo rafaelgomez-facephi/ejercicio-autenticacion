@@ -16,13 +16,14 @@
 
     req.send();
 
+    if (req.status === 200){
     email = req.getResponseHeader("Gap-Auth");
 
     greetingMessage.innerHTML = email ? email : "Hello Anonymous";
     dataMessage.innerHTML = email ? req.responseText : "Hidden data";
 
     btn.innerText = email ? "Logout" : "Login";
-
+    }
     btn.addEventListener('click', () => window.location.href = email ? "/oauth2/sign_out" : "/oauth2/sign_in")
   </script>
 </html>
